@@ -1,14 +1,12 @@
 const User = require('../../models/user');
 
 async function destroy(id){
-  const user = await User.findById(id);
-  if (!user) {
-    const error = new Error('user not found.');
-    error.statusCode = 404;
-    throw error;
+  try {
+    await User.findByIdAndDelete(id);
+  } catch (err) {
+    console.error(err);
+    throw new Error("something wrong while deleting user.");
   }
-
-  await user.remove();
 }
 
 module.exports = destroy;
