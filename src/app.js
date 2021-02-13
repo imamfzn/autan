@@ -10,6 +10,11 @@ if (!process.env.ACCESS_TOKEN_SECRET){
   process.exit(1);
 }
 
+if (! (process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD)){
+  console.error("ERROR: BASIC_AUTH_USER or BASIC_AUTH_PASSWORD not provided.");
+  process.exit(1);
+}
+
 mongoose
   .connect("mongodb://localhost/autan", { useNewUrlParser: true })
   .then(() => console.log("Connected to mongodb."))
