@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../../models/user');
 
 async function login(username, password){
   const userRec = await User.findOne({ username });
@@ -31,6 +31,4 @@ function generateToken(user){
   );
 }
 
-module.exports = {
-  login
-};
+module.exports = login;
