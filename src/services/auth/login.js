@@ -5,11 +5,15 @@ const User = require('../../models/user');
 async function login(username, password){
   const userRec = await User.findOne({ username });
   if (!userRec) {
-    throw new Error('User not found.');
+    const error = new Error('invalid user / password');
+    error.statusCode = 401;
+    throw error;
   }
 
   if (!await bcrypt.compare(password, userRec.password)){
-    throw new Error('Invalid password.');
+    const error = new Error('invalid user / password');
+    error.statusCode = 401;
+    throw error;
   }
 
   const token = generateToken(userRec);
@@ -31,4 +35,4 @@ function generateToken(user){
   );
 }
 
-module.exports = login;
+module.exports = login
