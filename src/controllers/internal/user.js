@@ -1,4 +1,6 @@
+const User = require('../../models/user');
 const UserService = require('../../services/user');
+
 
 async function register(req, res, next){
   try {
@@ -19,7 +21,24 @@ async function destroy(req, res, next){
   }
 }
 
+async function get(req, res, next){
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user){
+      const error = new Error("user not found.");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    next(new Error("something wrong, can't get user."));
+  }
+}
+
 module.exports = {
+  get,
   register,
   destroy,
   delete: destroy,

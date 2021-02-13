@@ -16,6 +16,7 @@ route.put(
   UserController.register
 );
 
+route.get('/:id', UserController.get);
 route.delete('/:id', UserController.delete);
 
 module.exports = route;
