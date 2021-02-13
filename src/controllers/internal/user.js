@@ -10,6 +10,17 @@ async function register(req, res, next){
   }
 }
 
+async function destroy(req, res, next){
+  try {
+    await UserService.delete(req.params.id)
+    res.status(200).json( {message: "user has been deleted."} );
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
-  register
+  register,
+  destroy,
+  delete: destroy,
 };
