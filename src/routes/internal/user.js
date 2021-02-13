@@ -1,18 +1,19 @@
 const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
-const AuthController = require('../controllers/auth');
+const UserController = require('../../controllers/internal/user');
 
 const route = Router();
 
-route.post(
-  '/login',
+route.put(
+  '/',
   celebrate({
     body: Joi.object({
       username: Joi.string().required(),
-      password: Joi.string().required()
+      password: Joi.string().required(),
+      role: Joi.string().valid('user', 'admin'),
     })
   }),
-  AuthController.login
+  UserController.register
 );
 
 module.exports = route;

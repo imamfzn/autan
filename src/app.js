@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRouter = require('./routes/auth');
+const internalRouter = require('./routes/internal');
 
 const app = express();
 
@@ -16,5 +17,7 @@ mongoose
 
 app.use(express.json());
 app.use('/auth', authRouter);
+app.use('/_internal', internalRouter);
+
 
 app.listen(3000, () => console.log("App is running"));
