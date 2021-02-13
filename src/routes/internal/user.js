@@ -1,21 +1,11 @@
 const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
 const UserController = require('../../controllers/internal/user');
+const validation = require('../../middlewares/validations');
 
 const route = Router();
 
-route.put(
-  '/',
-  celebrate({
-    body: Joi.object({
-      username: Joi.string().required(),
-      password: Joi.string().required(),
-      role: Joi.string().valid('user', 'admin'),
-    })
-  }),
-  UserController.register
-);
-
+route.put('/', validation.register, UserController.register);
 route.get('/:id', UserController.get);
 route.delete('/:id', UserController.delete);
 
