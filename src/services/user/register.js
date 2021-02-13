@@ -4,7 +4,9 @@ const User = require('../../models/user');
 async function register({username, password, role}){
   const userExists = await User.findOne({ username });
   if (userExists) {
-    throw new Error('username already taken.');
+    const error = new Error('username already taken.');
+    error.statusCode = 409;
+    throw error;
   }
 
   const userRegister = new User({username, role});

@@ -5,11 +5,11 @@ async function register(req, res, next){
     const user = await UserService.register(req.body);
 
     return res.status(201).json(user);
-  } catch (e) {
-    next(e);
+  } catch (err) {
+    next(err);
   }
 }
 
 module.exports = {
-    register
+  register
 };
