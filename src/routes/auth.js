@@ -15,4 +15,16 @@ route.post(
   AuthController.login
 );
 
+route.put(
+  '/_internal/users',
+  celebrate({
+    body: Joi.object({
+      username: Joi.string().required(),
+      password: Joi.string().required(),
+      role: Joi.string().valid('user', 'admin'),
+    })
+  }),
+  AuthController.register
+);
+
 module.exports = route;
