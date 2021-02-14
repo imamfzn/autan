@@ -4,7 +4,7 @@
   "description": "autan is a simple rest api service that handle auth using jwt",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "./node_modules/.bin/eslint"
   },
   "repository": {
@@ -36,6 +36,9 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^1.7.0"
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^26.6.3",
+    "sinon": "^v7.5.0",
+    "sinon-mongoose": "^2.3.0"
   }
 }
