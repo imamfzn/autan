@@ -5,5 +5,5 @@ module.exports = celebrate({
     username: Joi.string().required(),
     password: Joi.string().required(),
     role: Joi.string().valid('user', 'admin'),
-  })
+  }),
 });

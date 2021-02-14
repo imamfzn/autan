@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { celebrate, Joi } = require('celebrate');
 const UserController = require('../../controllers/internal/user');
 const validation = require('../../middlewares/validations');
 

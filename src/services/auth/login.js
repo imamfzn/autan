@@ -1,8 +1,20 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/user');
 
-async function login(username, password){
+function generateToken(user) {
+  return jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+      role: user.role,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: '1h' },
+  );
+}
+
+async function login(username, password) {
   const userRec = await User.findOne({ username });
   if (!userRec) {
     const error = new Error('invalid user / password');
@@ -10,7 +22,7 @@ async function login(username, password){
     throw error;
   }
 
-  if (!await bcrypt.compare(password, userRec.password)){
+  if (!await bcrypt.compare(password, userRec.password)) {
     const error = new Error('invalid user / password');
     error.statusCode = 401;
     throw error;
@@ -23,16 +35,4 @@ async function login(username, password){
   return { user, token };
 }
 
-function generateToken(user){
-  return jwt.sign(
-    {
-      id: user._id,
-      username: user.username,
-      role: user.role,
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '1h' }
-  );
-}
-
-module.exports = login
+module.exports = login;

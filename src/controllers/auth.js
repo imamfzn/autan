@@ -1,6 +1,6 @@
 const AuthService = require('../services/auth');
 
-async function login(req, res, next){
+async function login(req, res, next) {
   try {
     const { username, password } = req.body;
     const { user, token } = await AuthService.login(username, password);
@@ -12,5 +12,5 @@ async function login(req, res, next){
 }
 
 module.exports = {
-  login
+  login,
 };

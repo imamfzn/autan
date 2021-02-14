@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 
-async function register({username, password, role}){
+async function register({ username, password, role }) {
   const userRegister = new User({ username, role });
 
   try {
@@ -14,7 +14,7 @@ async function register({username, password, role}){
   try {
     await userRegister.save();
   } catch (err) {
-    if (err.code == 11000){
+    if (err.code === 11000) {
       const error = new Error('username already taken.');
       error.statusCode = 409;
       throw error;

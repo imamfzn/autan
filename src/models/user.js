@@ -7,18 +7,17 @@ const User = new mongoose.Schema({
     minlength: 6,
     maxlength: 25,
     unique: true,
-    lowercase: true
+    lowercase: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
-    default: 'user'
-  }
+    default: 'user',
+  },
 },
-  { timestamps: true }
-);
+{ timestamps: true });
 
 module.exports = mongoose.model('User', User);
