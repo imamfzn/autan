@@ -27,7 +27,7 @@ app.use(middleware.error);
   async function (){
     try {
       await mongoose.connect(
-        'mongodb://localhost/autan',{
+        process.env.MONGODB_URL,{
           useNewUrlParser: true,
           useUnifiedTopology: true,
           useFindAndModify: false,
