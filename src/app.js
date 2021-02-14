@@ -27,14 +27,19 @@ app.use('/_internal', internalRouter);
 app.use(errorHandler);
 
 async function start() {
-  await mongoose.connect(
-    process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
-    },
-  );
+  try {
+    await mongoose.connect(
+      process.env.MONGODB_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true,
+      },
+    );
+  } catch (err) {
+    logger.error(err);
+    process.exit(1);
+  }
 
   app.listen(port, () => logger.info(`Autan is running on port ${port}`));
 }
