@@ -4,6 +4,7 @@
   "description": "autan is a simple rest api service that handle auth using jwt",
   "main": "index.js",
   "scripts": {
+    "start": "node src/app.js",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint src"
   },
