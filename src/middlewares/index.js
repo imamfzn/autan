@@ -3,5 +3,6 @@ const validations = require('./validations');
 module.exports = {
   errorHandler: require('./error'),
   basicAuth: require('./basic_auth'),
+  requestLog: require('./request_log'),
   ...validations,
 };

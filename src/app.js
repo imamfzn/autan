@@ -1,11 +1,10 @@
 require('dotenv').config();
 
 const express = require('express');
-const morgan = require('morgan');
 const mongoose = require('mongoose');
 const authRouter = require('./routes/auth');
 const internalRouter = require('./routes/internal');
-const { errorHandler } = require('./middlewares');
+const { errorHandler, requestLog } = require('./middlewares');
 
 if (!process.env.ACCESS_TOKEN_SECRET) {
   console.error('ERROR: ACCESS_TOKEN_SECRET not provided!');
@@ -20,7 +19,7 @@ if (!(process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD)) {
 const app = express();
 
 app.use(express.json());
-app.use(morgan('combined'));
+app.use(requestLog);
 app.use('/auth', authRouter);
 app.use('/_internal', internalRouter);
 app.use(errorHandler);
