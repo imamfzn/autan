@@ -36,7 +36,7 @@ async function start() {
     },
   );
 
-  app.listen(3000, () => logger.info(`Autan is running on port ${port}`));
+  app.listen(port, () => logger.info(`Autan is running on port ${port}`));
 }
 
 start();
