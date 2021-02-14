@@ -1,5 +1,7 @@
+const validations = require('./validations');
+
 module.exports = {
-  error: require('./error'),
+  errorHandler: require('./error'),
   basicAuth: require('./basic_auth'),
-  validation: require('./validations'),
+  ...validations,
 };

@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const authRouter = require('./routes/auth');
 const internalRouter = require('./routes/internal');
-const middleware = require('./middlewares');
+const { errorHandler } = require('./middlewares');
 
 if (!process.env.ACCESS_TOKEN_SECRET) {
   console.error('ERROR: ACCESS_TOKEN_SECRET not provided!');
@@ -21,7 +21,7 @@ const app = express();
 app.use(express.json());
 app.use('/auth', authRouter);
 app.use('/_internal', internalRouter);
-app.use(middleware.error);
+app.use(errorHandler);
 
 async function start() {
   await mongoose.connect(
