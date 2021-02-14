@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
+const logger = require('../../lib/logger');
 
 async function register({ username, password, role }) {
   const userRegister = new User({ username, role });
@@ -7,7 +8,7 @@ async function register({ username, password, role }) {
   try {
     userRegister.password = await bcrypt.hash(password, 10);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     throw new Error("something wrong, can't create new user.");
   }
 
@@ -20,7 +21,7 @@ async function register({ username, password, role }) {
       throw error;
     }
 
-    console.error(err);
+    logger.error(err);
     throw new Error("something wrong, can't create new user.");
   }
 

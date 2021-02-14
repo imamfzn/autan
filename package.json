@@ -29,7 +29,8 @@
     "express-basic-auth": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.15",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pino": "^6.11.1"
   },
   "devDependencies": {
     "eslint": "^7.20.0",

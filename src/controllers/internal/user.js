@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const UserService = require('../../services/user');
+const logger = require('../../lib/logger');
 
 async function register(req, res, next) {
   try {
@@ -31,7 +32,7 @@ async function get(req, res, next) {
 
     res.json(user);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     next(new Error('something wrong, can\'t get user.'));
   }
 }
