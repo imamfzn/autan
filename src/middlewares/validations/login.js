@@ -1,8 +1,9 @@
-const { celebrate, Joi } = require('celebrate');
+const Joi = require('joi');
+const validateRequest = require('../validate-request');
 
-module.exports = celebrate({
-  body: Joi.object({
+module.exports = validateRequest(
+  Joi.object({
     username: Joi.string().required(),
     password: Joi.string().required(),
   }),
-});
+);

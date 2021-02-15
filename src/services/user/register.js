@@ -1,34 +1,20 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
-const logger = require('../../lib/logger');
+const { UserAlreadyUsedError } = require('../../lib/error');
+
+const basicDetails = ({ id, username, role }) => ({ id, username, role });
 
 async function register({ username, password, role }) {
-  const userRegister = new User({ username, role });
+  const user = new User({ username, role });
+  user.password = await bcrypt.hash(password, 10);
 
   try {
-    userRegister.password = await bcrypt.hash(password, 10);
+    await user.save();
   } catch (err) {
-    logger.error(err);
-    throw new Error("something wrong, can't create new user.");
+    throw (err.code === 11000 ? new UserAlreadyUsedError() : err);
   }
 
-  try {
-    await userRegister.save();
-  } catch (err) {
-    if (err.code === 11000) {
-      const error = new Error('username already taken.');
-      error.statusCode = 409;
-      throw error;
-    }
-
-    logger.error(err);
-    throw new Error("something wrong, can't create new user.");
-  }
-
-  const user = userRegister.toObject();
-  delete user.password;
-
-  return user;
+  return basicDetails(user);
 }
 
 module.exports = register;

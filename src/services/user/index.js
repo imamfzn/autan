@@ -1,4 +1,6 @@
 module.exports = {
+  login: require('./login'),
+  get: require('./get'),
   register: require('./register'),
-  delete: require('./delete'),
+  remove: require('./remove'),
 };

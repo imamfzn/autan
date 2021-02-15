@@ -2,9 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const routes = require('./routes');
 const logger = require('./lib/logger');
-const authRouter = require('./routes/auth');
-const internalRouter = require('./routes/internal');
 const { errorHandler, requestLog } = require('./middlewares');
 
 if (!process.env.ACCESS_TOKEN_SECRET) {
@@ -22,8 +21,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(requestLog);
-app.use('/auth', authRouter);
-app.use('/_internal', internalRouter);
+app.use(routes);
 app.use(errorHandler);
 
 async function start() {
