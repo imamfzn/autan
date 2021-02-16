@@ -1,13 +1,13 @@
 FROM node:14.15-alpine3.13
 
+ENV NODE_ENV=production
+
 WORKDIR autan
 
-COPY package*.json src ./
-
-ENV NODE_ENV=production
+COPY . ./
 
 RUN npm install
 
 EXPOSE 3000
 
-CMD [ "node", "app.js" ]
+CMD [ "npm", "start" ]
