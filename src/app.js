@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const routes = require('./routes');
 const logger = require('./lib/logger');
 const { errorHandler, requestLog } = require('./middlewares');
@@ -19,7 +20,8 @@ if (!(process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD)) {
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(requestLog);
 app.use(routes);
 app.use(errorHandler);
