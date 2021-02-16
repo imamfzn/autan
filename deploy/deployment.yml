@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autan
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: autan
+  template:
+    metadata:
+      labels:
+        app: autan
+    spec:
+      containers:
+      - name: autan
+        image: autan:0.1.0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: autan
