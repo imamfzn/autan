@@ -19,7 +19,7 @@ class ValidationError extends AutanError {
 }
 
 class UnauthorizedError extends AutanError {
-  constructor(message = 'You are unauthorized') {
+  constructor(message = 'You aren\'t authorize to access this') {
     super(message, 401);
   }
 }
