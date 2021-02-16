@@ -1,36 +1,38 @@
 class AutanError extends Error {
-  constructor(message) {
+  constructor(message, status = 500) {
     super(message);
-    this.httpStatus = 500;
+    this.httpStatus = status;
     this.class = this.constructor;
   }
 }
 
 class UserNotFoundError extends AutanError {
   constructor(message = 'User not found') {
-    super(message);
-    this.httpStatus = 404;
+    super(message, 404);
   }
 }
 
 class ValidationError extends AutanError {
   constructor(details) {
-    super(`Validation error: ${details}`);
-    this.httpStatus = 400;
+    super(`Validation error: ${details}`, 400);
+  }
+}
+
+class UnauthorizedError extends AutanError {
+  constructor(message = 'You are unauthorized') {
+    super(message, 401);
   }
 }
 
 class InvalidLoginError extends AutanError {
   constructor(message = 'Username or password incorrect') {
-    super(message);
-    this.httpStatus = 401;
+    super(message, 401);
   }
 }
 
 class UserAlreadyUsedError extends AutanError {
   constructor(message = 'Username already used') {
-    super(message);
-    this.httpStatus = 409;
+    super(message, 409);
   }
 }
 
@@ -44,6 +46,7 @@ module.exports = {
   AutanError,
   UserNotFoundError,
   ValidationError,
+  UnauthorizedError,
   InternalServerError,
   InvalidLoginError,
   UserAlreadyUsedError,

@@ -9,23 +9,6 @@ function sendResponse(res, status = 200) {
   };
 }
 
-function login(req, res, next) {
-  const { username, password } = req.body;
-  const { ip } = req;
-
-  UserService.login({ username, password, ip })
-    .then(sendResponse(res))
-    .catch(next);
-}
-
-function refreshToken() {
-
-}
-
-function revokeToken() {
-
-}
-
 function get(req, res, next) {
   UserService.get(req.params.id).then(sendResponse(res)).catch(next);
 }
@@ -41,9 +24,6 @@ function remove(req, res, next) {
 }
 
 module.exports = {
-  login,
-  refreshToken,
-  revokeToken,
   get,
   register,
   remove,

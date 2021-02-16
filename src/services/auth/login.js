@@ -1,23 +1,8 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const jwt = require('../../lib/jwt');
 const User = require('../../models/user');
+const RefreshToken = require('../../models/refresh-token');
 const { InvalidLoginError } = require('../../lib/error');
-
-function generateJwtToken(user) {
-  return jwt.sign(
-    {
-      id: user.id,
-      username: user.username,
-      role: user.role,
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '1h' },
-  );
-}
-
-function generateRefreshToken() {
-  return null;
-}
 
 const basicDetails = ({ id, username, role }) => ({ id, username, role });
 
@@ -28,16 +13,15 @@ async function login({ username, password, ip }) {
     throw new InvalidLoginError();
   }
 
-  const accessToken = generateJwtToken(user);
-  const refreshToken = generateRefreshToken(user, ip);
+  const accessToken = jwt.generate(user);
+  const refreshToken = RefreshToken.generate(user, ip);
 
-  // TO-DO
-  // save refresh token to database
+  await refreshToken.save();
 
   return {
     ...basicDetails(user),
     accessToken,
-    refreshToken,
+    refreshToken: refreshToken.token,
   };
 }
 
