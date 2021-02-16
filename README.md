@@ -3,8 +3,7 @@ Autan is a simple rest api service that handle auth using jwt.
 
 # Dependencies
 
-* MongoDB
-Autan used mongodb to store user credentials and refresh  tokens.
+* MongoDB, to store user credentials and refresh tokens.
 
 # How-To
 1. Download / clone this repository
