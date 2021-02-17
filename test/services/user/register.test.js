@@ -12,7 +12,7 @@ describe('register user', () => {
     try {
       const user = await UserService.register(payload);
 
-      expect(user).toHaveProperty('_id');
+      expect(user).toHaveProperty('id');
       expect(user).toHaveProperty('role', 'user');
       expect(user).not.toHaveProperty('password');
     } catch (e) {

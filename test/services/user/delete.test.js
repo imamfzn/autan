@@ -7,16 +7,12 @@ describe('deleting user', () => {
   const userId = "602790f104f3832b5b0e4b7f";
 
   beforeEach(() => {
-    sinon
-      .mock(User)
-      .expects('findByIdAndDelete')
-      .withArgs(userId)
-      .resolves()
+    sinon.mock(User).expects('findByIdAndDelete').withArgs(userId).resolves()
   });
 
   afterEach(() => sinon.restore());
 
   it('can be deleted', async () => {
-    await expect(UserService.delete(userId)).resolves.not.toThrow();
+    await expect(UserService.remove(userId)).resolves.not.toThrow();
   });
 });
