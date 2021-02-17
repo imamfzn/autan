@@ -1,38 +1,44 @@
 const sinon = require('sinon');
 require('sinon-mongoose');
 const bcrypt = require('bcrypt');
+
 const User = require('../../../src/models/user');
+const RefreshToken = require('../../../src/models/refresh-token');
 const AuthService = require('../../../src/services/auth');
 
 describe('AuthService#login', () => {
+  const username = 'test123';
+  const password = 'aman';
+  const ip = '127.0.0.1';
+
   const user = new User({
-    username: 'test123',
+    username,
     password: '$2b$10$NMhT8gHVyeOaxWVD1ezEYeYOrQpZ5pw/Or2v7CQ0D0SElJ2iDGl3i',
     role: 'user'
   });
+
+  const refreshToken = new RefreshToken({ token: 'xxxx' });
+
+  beforeEach(() => process.env.ACCESS_TOKEN_SECRET = 'rahasia');
 
   afterEach(() => sinon.restore());
 
   describe('login success', () => {
     beforeEach(() => {
-      process.env.ACCESS_TOKEN_SECRET = 'rahasia';
-
-      sinon
-        .mock(User)
-        .expects('findOne')
-        .withArgs({ username: user.username })
-        .resolves(user);
+      sinon.mock(User).expects('findOne').withArgs({ username }).resolves(user);
+      sinon.mock(RefreshToken).expects('generate').returns(refreshToken);
+      sinon.stub(RefreshToken.prototype, 'save').resolves();
     });
 
     it('can login', async () => {
       try {
-        const { user, token } = await AuthService.login('test123', 'aman');
-        expect(token).toBeDefined();
-        expect(token).not.toBeNull();
-        expect(user).not.toHaveProperty('password');
-        expect(user).toHaveProperty('_id');
-        expect(user).toHaveProperty('username');
-        expect(user).toHaveProperty('role');
+        const payload = await AuthService.login({ username, password, ip });
+
+        expect(payload).toHaveProperty('username');
+        expect(payload).toHaveProperty('role');
+        expect(payload).not.toHaveProperty('password');
+        expect(payload.refreshToken).toEqual(refreshToken.token);
+        expect(payload.accessToken).toBeDefined();
       } catch (err) {
         expect(err).toBeNull();
       }
@@ -41,15 +47,11 @@ describe('AuthService#login', () => {
 
   describe('invalid user/password', () => {
     beforeEach(() => {
-      sinon
-        .mock(User)
-        .expects('findOne')
-        .withArgs({ username: user.username })
-        .resolves();
+      sinon.mock(User).expects('findOne').withArgs({ username }).resolves();
     });
 
     it('can\'t login', async () => {
-      await expect(AuthService.login('test123', 'aman')).rejects.toThrow();
+      await expect(AuthService.login({ username, password, ip })).rejects.toThrow();
     });
   });
 });
