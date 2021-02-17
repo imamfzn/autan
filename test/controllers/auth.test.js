@@ -1,7 +1,9 @@
 const sinon = require('sinon');
 require('sinon-mongoose');
+
 const AuthService = require('../../src/services/auth');
 const AuthController = require('../../src/controllers/auth');
+const { InvalidLoginError } = require('../../src/lib/error');
 
 describe('AuthController#login', () => {
   const req = {
@@ -14,13 +16,14 @@ describe('AuthController#login', () => {
   afterEach(() => sinon.restore());
 
   describe('login success', () => {
-    const user = { username: 'user123' };
-    const token = 'abcd123';
-    const authResult = { user, token };
+    const username = 'user123';
+    const accessToken = 'abcd123';
+    const refreshToken = 'xxxx';
+    const authResult = { username, accessToken, refreshToken };
 
     // dummy controller params
     const next = err => err;
-    const res = { json: () => {} };
+    const res = { status() { return this }, json() { } };
 
     beforeEach(() => {
       sinon.stub(AuthService, 'login').resolves(authResult);
@@ -28,23 +31,22 @@ describe('AuthController#login', () => {
     });
 
     it('successfull', async () => {
-      expect(await AuthController.login(req, res, next)).resolves;
-      expect(res.json.withArgs({...user, token}).calledOnce).toBeTruthy();
+      await expect(AuthController.login(req, res, next)).resolves;
+      expect(res.json.calledOnce).toBeTruthy();
     });
   });
 
   describe('login failed', () => {
     const res = {};
-    const next = sinon.spy();
-    const loginError = new Error('failed to login.');
 
     beforeEach(() => {
-      sinon.stub(AuthService, 'login').rejects(loginError);
+      sinon.stub(AuthService, 'login').rejects(new InvalidLoginError());
     });
 
     it('failed to login', async () => {
-      expect(await AuthController.login(req, res, next)).rejects;
-      expect(next.withArgs(loginError).calledOnce).toBeTruthy();
+      AuthController.login(req, res, (err) => {
+        expect(err).toBeInstanceOf(InvalidLoginError);
+      });
     });
   });
 });
